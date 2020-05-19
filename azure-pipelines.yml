@@ -50,8 +50,8 @@ steps:
     projects: '**/*.csproj'
 
 - task : DotNetCoreCLI@2
-displayName: 'Publish the project - Release'
-inputs:
+  displayName: 'Publish the project - Release'
+  inputs:
   command: 'publish'  # publishes or packages the app build result(including dependices) into a folder.
   projects: '**/*.csproj'
   publishWebProjects: false
