@@ -53,14 +53,14 @@ steps:
     projects: '**/*.csproj'
 
 
-- task : DotNetCoreCLI@2
-   displayName: 'Publish the project - $(buildConfiguration)'
-   inputs:
-    command: 'publish'  # publishes or packages the app build result(including dependices) into a folder.
+- task: DotNetCoreCLI@2
+  displayName: 'Publish the project - $(buildConfiguration)'
+  inputs:
+    command: 'publish'
     projects: '**/*.csproj'
     publishWebProjects: false
     arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
-    zipAfterPublish: true # specifies to add the built result to a .zip file
+    zipAfterPublish: true
 
 - task: PublishBuildArtifacts@1 # publishes the .zip file to Azure piplines 
   displayName: 'Publish Artifact: drop'
