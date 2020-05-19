@@ -36,15 +36,28 @@ steps:
   displayName: 'Write build info'
   workingDirectory: Tailspin.SpaceGame.Web/wwwroot
 
-- task : DotNetCoreCLI@2
+- task : DotNetCoreCLI@2 # install the packages 
   displayName: 'Restore Project dependencies(install project dependencies)'
   inputs: 
     command: 'restore'
     projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build the project - Release Mo'
+- task: DotNetCoreCLI@2 # builds the package 
+  displayName: 'Build the project - Release Mo' 
   inputs: 
     command: 'build'
     arguments: '--no-restore --configuration Release'
     projects: '**/*.csproj'
+
+- task : DotNetCoreCLI@2
+displayName: 'Publish the project - Release'
+inputs:
+  command: 'publish'  # publishes or packages the app build result(including dependices) into a folder.
+  projects: '**/*.csproj'
+  publishWebProjects: false
+  arguments: '--no-build --configuration Release --output $(Build.ArtifactStagingDirectory)/Release' 
+  zipAfterPublish: true # specifies to add the built result to a .zip file
+
+- task: PublishBuildArtifacts@1 # publishes the .zip file to Azure piplines 
+  displayName: 'Publish Artifact: drop'
+  condition: succeeded() # Only zip's the file if the previous task succeseds .
